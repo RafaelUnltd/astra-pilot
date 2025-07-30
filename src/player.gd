@@ -15,6 +15,7 @@ const MAX_HEALTH := 100.0
 
 var health: float = MAX_HEALTH
 var score: float = 0.0
+var is_dead: bool = false
 
 func _ready() -> void:
 	hide()
@@ -55,13 +56,14 @@ func _update_player_position(delta: float):
 	return
 
 func _update_thruster_particles():
-	if Input.is_action_pressed("boost"):
+	if Input.is_action_pressed("boost") && !is_dead:
 		$ThrusterParticles.lifetime = BOOSTED_THRUSTER_LIFETIME
 		return
 	$ThrusterParticles.lifetime = DEFAULT_THRUSTER_LIFETIME
 
 func _fire_if_requested():
-	if !Input.is_action_just_pressed("fire"): return
+	
+	if !Input.is_action_just_pressed("fire") || is_dead: return
 	
 	var projectile = projectile_scene.instantiate()
 	var offset = global_transform.basis_xform(Vector2.RIGHT) * SCALAR_PROJECTILE_OFFSET_X
@@ -82,6 +84,7 @@ func take_damage(damage: float):
 	$HitSound.play()
 	if health == 0:
 		# Play explosion particles
+		is_dead = true
 		$ThrusterSound.stop()
 		died.emit()
 		hide()
@@ -91,7 +94,7 @@ func _on_asteroid_hit(value: float):
 	score_updated.emit(score)
 
 func _on_body_entered(body: Node2D) -> void:
-	if health <= 0: return
+	if is_dead: return
 	if body.is_in_group("asteroids") && body.has_method("get_damage"):
 		take_damage(body.get_damage())
 		body.call("queue_free")

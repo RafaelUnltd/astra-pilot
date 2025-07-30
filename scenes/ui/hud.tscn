@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0jdcar1thce4"]
+[gd_scene load_steps=6 format=3 uid="uid://c0jdcar1thce4"]
 
 [ext_resource type="Script" uid="uid://bmmcxg8uph8va" path="res://src/hud.gd" id="1_ahhtf"]
+[ext_resource type="FontFile" uid="uid://bmeadoefgb8ia" path="res://assets/fonts/conthrax.otf" id="2_bo48s"]
 [ext_resource type="FontFile" uid="uid://bxsea4y0kktqa" path="res://assets/fonts/squid_game.ttf" id="2_oo0fn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahhtf"]
@@ -40,7 +41,7 @@ offset_right = -40.0
 offset_bottom = 91.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
-theme_override_fonts/font = ExtResource("2_oo0fn")
+theme_override_fonts/font = ExtResource("2_bo48s")
 theme_override_font_sizes/font_size = 40
 text = "0"
 

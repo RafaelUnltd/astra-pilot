@@ -13,7 +13,7 @@ func _ready() -> void:
 	$AsteroidSpawnTimer.start()
 
 func _on_asteroid_spawn_timeout() -> void:
-	# Gets a random location aroun the path
+	# Gets a random location around the path
 	var spawn_location = $AsteroidPath/AsteroidSpawnLocation
 	spawn_location.progress_ratio = randf()
 	
