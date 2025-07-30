@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfbo3ra2md313"]
+
+[ext_resource type="Script" uid="uid://djdfelr22piqh" path="res://src/menu.gd" id="1_apwh8"]
+[ext_resource type="PackedScene" uid="uid://rc5645w012qa" path="res://scenes/fx/starfield_background.tscn" id="2_0cngb"]
+[ext_resource type="FontFile" uid="uid://bxsea4y0kktqa" path="res://assets/fonts/squid_game.ttf" id="3_jn8sx"]
+[ext_resource type="FontFile" uid="uid://bmeadoefgb8ia" path="res://assets/fonts/conthrax.otf" id="4_w6ftq"]
+[ext_resource type="PackedScene" uid="uid://ds2756ecd4eow" path="res://scenes/fx/sepia_foreground.tscn" id="5_6qf5j"]
+[ext_resource type="AudioStream" uid="uid://dhosnrn66mjvt" path="res://assets/tracks/menu_music.mp3" id="6_0cngb"]
+
+[node name="Menu" type="CanvasLayer"]
+script = ExtResource("1_apwh8")
+
+[node name="StarfieldBackground" parent="." instance=ExtResource("2_0cngb")]
+
+[node name="GameTitle" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -421.5
+offset_top = -140.0
+offset_right = 421.5
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_fonts/font = ExtResource("3_jn8sx")
+theme_override_font_sizes/font_size = 120
+text = "Astra Pilot"
+
+[node name="StartGameCTA" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -431.0
+offset_top = 40.0
+offset_right = 432.0
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("4_w6ftq")
+theme_override_font_sizes/font_size = 50
+text = "Press any button to start"
+
+[node name="CTABlinkTimeout" type="Timer" parent="."]
+
+[node name="SepiaFilter" parent="." instance=ExtResource("5_6qf5j")]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_0cngb")
+autoplay = true
+parameters/looping = true
+
+[connection signal="timeout" from="CTABlinkTimeout" to="." method="_on_cta_blink_timeout"]

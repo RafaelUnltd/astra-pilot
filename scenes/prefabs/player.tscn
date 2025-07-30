@@ -1,0 +1,99 @@
+[gd_scene load_steps=14 format=3 uid="uid://cfbkrax68lafo"]
+
+[ext_resource type="Texture2D" uid="uid://b8gsibksjgllu" path="res://assets/sprites/ship.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://be6jc1hijl5yb" path="res://src/player.gd" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://bk51dq2333n0u" path="res://scenes/prefabs/projectile.tscn" id="2_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://d1urw54av0nhv" path="res://assets/tracks/hit.wav" id="4_dqkch"]
+[ext_resource type="AudioStream" uid="uid://bkhfl5yiry842" path="res://assets/tracks/thruster.mp3" id="5_56dyf"]
+
+[sub_resource type="Curve" id="Curve_dqkch"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.816384, 92.4483), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_qhqgy"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_dqkch"]
+offsets = PackedFloat32Array(0, 0.15, 0.81, 0.996667)
+colors = PackedColorArray(0.633843, 0, 0.0685708, 1, 0.854902, 0.270588, 0.2, 1, 1, 0.815686, 0.372549, 1, 1, 0.815686, 0.372549, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fjrip"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhqgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="Area2D" groups=["player"]]
+script = ExtResource("1_g2els")
+projectile_scene = ExtResource("2_qhqgy")
+metadata/_edit_group_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-33, -45)
+polygon = PackedVector2Array(0, 0, 20, 0, 45, 28, 70, 28, 70, 62, 45, 62, 20, 90, 0, 90)
+
+[node name="ThrusterParticles" type="CPUParticles2D" parent="." groups=["player"]]
+position = Vector2(-44, 0)
+amount = 2000
+lifetime = 0.25
+emission_shape = 1
+emission_sphere_radius = 15.0
+direction = Vector2(-1, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 300.0
+radial_accel_min = -50.0
+radial_accel_max = -10.0
+radial_accel_curve = SubResource("Curve_dqkch")
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_qhqgy")
+color_ramp = SubResource("Gradient_dqkch")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_fjrip")
+frame_progress = 0.259416
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_dqkch")
+
+[node name="ThrusterSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_56dyf")
+autoplay = true
+parameters/looping = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

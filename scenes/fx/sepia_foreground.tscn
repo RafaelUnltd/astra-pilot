@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://ds2756ecd4eow"]
+
+[ext_resource type="Shader" uid="uid://bgcw7w61g7vmw" path="res://assets/shaders/sepia.gdshader" id="1_3pddl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbgi4"]
+shader = ExtResource("1_3pddl")
+
+[node name="SepiaFilter" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_tbgi4")
+offset_right = 1920.0
+offset_bottom = 1080.0

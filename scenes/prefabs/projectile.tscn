@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://bk51dq2333n0u"]
+
+[ext_resource type="Script" uid="uid://bs1l56l1ugywk" path="res://src/projectile.gd" id="1_t7kom"]
+[ext_resource type="Texture2D" uid="uid://cp4wcprqvef2o" path="res://assets/sprites/projectile.png" id="2_a5uni"]
+[ext_resource type="AudioStream" uid="uid://c2jiwtuedbhwg" path="res://assets/tracks/laser.wav" id="3_q7p0a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q3m7n"]
+size = Vector2(64, 4)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_softn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_a5uni")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Projectile" type="Area2D"]
+script = ExtResource("1_t7kom")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-5, 0)
+shape = SubResource("RectangleShape2D_q3m7n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.4, 0.2)
+sprite_frames = SubResource("SpriteFrames_softn")
+
+[node name="ScreenExitNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="ProjectileSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_q7p0a")
+autoplay = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="ScreenExitNotifier" to="." method="_on_exit_screen"]

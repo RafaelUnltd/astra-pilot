@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://djhvprr6p41b4"]
+
+[ext_resource type="Script" uid="uid://15cat53luvip" path="res://src/main.gd" id="1_b6bv0"]
+[ext_resource type="PackedScene" uid="uid://b7fvfxutlioan" path="res://scenes/prefabs/asteroid.tscn" id="2_ubwgw"]
+[ext_resource type="PackedScene" uid="uid://rc5645w012qa" path="res://scenes/fx/starfield_background.tscn" id="3_vkq25"]
+[ext_resource type="PackedScene" uid="uid://cfbkrax68lafo" path="res://scenes/prefabs/player.tscn" id="4_7lrji"]
+[ext_resource type="PackedScene" uid="uid://c0jdcar1thce4" path="res://scenes/ui/hud.tscn" id="5_rssyh"]
+[ext_resource type="PackedScene" uid="uid://ds2756ecd4eow" path="res://scenes/fx/sepia_foreground.tscn" id="6_hwp66"]
+[ext_resource type="AudioStream" uid="uid://x4dmo4h8jx1p" path="res://assets/tracks/game_over.mp3" id="7_ubwgw"]
+
+[sub_resource type="Curve2D" id="Curve2D_0wfyh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920, 0, 0, 0, 0, 0, 1920, 1080, 0, 0, 0, 0, 0, 1080, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_b6bv0")
+asteroid_scene = ExtResource("2_ubwgw")
+
+[node name="StarfieldBackground" parent="." instance=ExtResource("3_vkq25")]
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Player" parent="." instance=ExtResource("4_7lrji")]
+
+[node name="AsteroidPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_0wfyh")
+
+[node name="AsteroidSpawnLocation" type="PathFollow2D" parent="AsteroidPath"]
+
+[node name="AsteroidSpawnTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="HUD" parent="." instance=ExtResource("5_rssyh")]
+
+[node name="SepiaFilter" parent="." instance=ExtResource("6_hwp66")]
+
+[node name="GameOverSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_ubwgw")
+
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="health_updated" from="Player" to="." method="_on_player_health_updated"]
+[connection signal="score_updated" from="Player" to="." method="_on_player_score_updated"]
+[connection signal="timeout" from="AsteroidSpawnTimer" to="." method="_on_asteroid_spawn_timeout"]
