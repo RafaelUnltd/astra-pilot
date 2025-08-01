@@ -2,7 +2,7 @@ extends Area2D
 
 signal health_updated(value: float)
 signal score_updated(value: float)
-signal died()
+signal died(pos: Vector2)
 
 @export var speed := 350.0
 @export var projectile_scene: PackedScene
@@ -52,7 +52,8 @@ func _update_player_position(delta: float):
 	velocity = velocity.normalized() * current_speed
 	var deltaMovement = velocity * delta
 	
-	position += deltaMovement
+	position.x = clampf(position.x + deltaMovement.x, 0, get_viewport_rect().size.x)
+	position.y = clampf(position.y + deltaMovement.y, 0, get_viewport_rect().size.y)
 	return
 
 func _update_thruster_particles():
@@ -86,12 +87,13 @@ func take_damage(damage: float):
 		# Play explosion particles
 		is_dead = true
 		$ThrusterSound.stop()
-		died.emit()
+		died.emit(position)
 		hide()
 
 func _on_asteroid_hit(value: float):
 	score += value
 	score_updated.emit(score)
+	$ExplosionSound.play()
 
 func _on_body_entered(body: Node2D) -> void:
 	if is_dead: return

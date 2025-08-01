@@ -7,6 +7,24 @@ signal shard_generated(pos: Vector2, rot: float, lin_velocity: Vector2, size: As
 const MIN_SHARDS := 2
 const MAX_SHARDS := 4
 
+const ASTEROID_SCALE := {
+	AsteroidSize.BIG: 2,
+	AsteroidSize.MEDIUM: 1,
+	AsteroidSize.SMALL: 1
+}
+
+const ASTEROID_DAMAGE := {
+	AsteroidSize.BIG: 45.0,
+	AsteroidSize.MEDIUM: 15.0,
+	AsteroidSize.SMALL: 5.0
+}
+
+const ASTEROID_SCORE := {
+	AsteroidSize.BIG: 50.0,
+	AsteroidSize.MEDIUM: 30.0,
+	AsteroidSize.SMALL: 10.0
+}
+
 @export var asteroid_scene: PackedScene
 var _current_size := AsteroidSize.BIG
 
@@ -20,16 +38,9 @@ func _on_screen_exit() -> void:
 
 func set_asteroid_size(value: AsteroidSize):
 	_current_size = value
-	# TODO: fix this shit
-	if _current_size == AsteroidSize.BIG:
-		$AnimatedSprite2D.scale = Vector2(2, 1.8)
-		$CollisionShape2D.scale = Vector2(2, 2)
-	elif _current_size == AsteroidSize.MEDIUM:
-		$AnimatedSprite2D.scale = Vector2(1, 0.9)
-		$CollisionShape2D.scale = Vector2(1, 1)
-	elif _current_size == AsteroidSize.SMALL:
-		$AnimatedSprite2D.scale = Vector2(0.5, 0.45)
-		$CollisionShape2D.scale = Vector2(0.5, 0.5)
+	var _asteroid_scale = ASTEROID_SCALE[_current_size]
+	$AnimatedSprite2D.scale = Vector2(_asteroid_scale, _asteroid_scale * 0.9)
+	$CollisionShape2D.scale = Vector2(_asteroid_scale, _asteroid_scale)
 
 func take_damage():
 	hide()
@@ -42,18 +53,10 @@ func take_damage():
 	queue_free()
 
 func get_damage() -> float:
-	if _current_size == AsteroidSize.BIG:
-		return 45.0
-	if _current_size == AsteroidSize.MEDIUM:
-		return 15.0
-	return 5.0
+	return ASTEROID_DAMAGE[_current_size]
 
 func get_score() -> float:
-	if _current_size == AsteroidSize.BIG:
-		return 50.0
-	if _current_size == AsteroidSize.MEDIUM:
-		return 30.0
-	return 10.0
+	return ASTEROID_SCORE[_current_size]
 
 func _generate_shard():
 	var new_size := AsteroidSize.BIG

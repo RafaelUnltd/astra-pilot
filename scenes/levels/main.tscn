@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://djhvprr6p41b4"]
+[gd_scene load_steps=11 format=3 uid="uid://djhvprr6p41b4"]
 
 [ext_resource type="Script" uid="uid://15cat53luvip" path="res://src/main.gd" id="1_b6bv0"]
 [ext_resource type="PackedScene" uid="uid://b7fvfxutlioan" path="res://scenes/prefabs/asteroid.tscn" id="2_ubwgw"]
@@ -13,6 +13,14 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920, 0, 0, 0, 0, 0, 1920, 1080, 0, 0, 0, 0, 0, 1080, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="Curve" id="Curve_ubwgw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vkq25"]
+offsets = PackedFloat32Array(0, 0.2, 0.636667, 1)
+colors = PackedColorArray(1, 0.94902, 1, 1, 1, 0.854902, 0, 1, 1, 0.34902, 0.270588, 1, 1, 0.34902, 0.270588, 0.490196)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_b6bv0")
@@ -39,6 +47,21 @@ wait_time = 0.5
 
 [node name="GameOverSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_ubwgw")
+
+[node name="PlayerExplosion" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 8000
+one_shot = true
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.31
+initial_velocity_max = 95.05
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_ubwgw")
+color_ramp = SubResource("Gradient_vkq25")
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_updated" from="Player" to="." method="_on_player_health_updated"]
