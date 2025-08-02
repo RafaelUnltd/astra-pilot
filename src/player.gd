@@ -7,6 +7,8 @@ signal died(pos: Vector2)
 @export var speed := 350.0
 @export var projectile_scene: PackedScene
 
+const Detector = preload("res://src/input_type_detector.gd")
+
 const SCALAR_PROJECTILE_OFFSET_X := 70.0
 const SPEED_BOOST_RATE := 1.5
 const BOOSTED_THRUSTER_LIFETIME := 0.4
@@ -16,6 +18,7 @@ const MAX_HEALTH := 100.0
 var health: float = MAX_HEALTH
 var score: float = 0.0
 var is_dead: bool = false
+var _last_joystick_rotation: float = 0
 
 func _ready() -> void:
 	hide()
@@ -28,9 +31,14 @@ func _process(delta: float):
 	_fire_if_requested()
 
 func _update_player_rotation():
-	var joystick_vector := Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_X), Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y))
-	if joystick_vector.length() > 0:
-		rotation = joystick_vector.angle()
+	var input_type: Detector.InputType = $InputTypeDetector.get_current_input_type()
+	if input_type == Detector.InputType.CONTROLLER:
+		var joystick_vector := Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_X), Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y))
+		if joystick_vector.length() > 0:
+			rotation = joystick_vector.angle()
+			_last_joystick_rotation = rotation
+		else:
+			rotation = _last_joystick_rotation
 		return
 	look_at(get_global_mouse_position())
 

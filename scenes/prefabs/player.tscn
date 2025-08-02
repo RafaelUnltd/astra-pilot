@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfbkrax68lafo"]
+[gd_scene load_steps=16 format=3 uid="uid://cfbkrax68lafo"]
 
 [ext_resource type="Texture2D" uid="uid://b8gsibksjgllu" path="res://assets/sprites/ship.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://be6jc1hijl5yb" path="res://src/player.gd" id="1_g2els"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://d1urw54av0nhv" path="res://assets/tracks/hit.wav" id="4_dqkch"]
 [ext_resource type="AudioStream" uid="uid://bkhfl5yiry842" path="res://assets/tracks/thruster.mp3" id="5_56dyf"]
 [ext_resource type="AudioStream" uid="uid://bewcf36ucwk20" path="res://assets/tracks/explosion.wav" id="6_6o77n"]
+[ext_resource type="Script" uid="uid://c1w1qqnqva06d" path="res://src/input_type_detector.gd" id="7_6v0jn"]
 
 [sub_resource type="Curve" id="Curve_dqkch"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
@@ -99,5 +100,8 @@ parameters/looping = true
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_6o77n")
+
+[node name="InputTypeDetector" type="Node2D" parent="."]
+script = ExtResource("7_6v0jn")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

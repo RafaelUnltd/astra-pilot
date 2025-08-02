@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnmm3m2tiqpjq"]
+
+[ext_resource type="Script" uid="uid://c1w1qqnqva06d" path="res://src/input_type_detector.gd" id="1_54rft"]
+
+[node name="InputTypeDetector" type="Node2D"]
+script = ExtResource("1_54rft")
